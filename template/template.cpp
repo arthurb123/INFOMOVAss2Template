@@ -162,17 +162,21 @@ int main()
 		IGP_detected = false;
 		// we want a console window for text outpu
 #ifndef FULLSCREEN
-	CONSOLE_SCREEN_BUFFER_INFO coninfo;
-	AllocConsole();
-	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &coninfo );
-	coninfo.dwSize.X = 1280;
-	coninfo.dwSize.Y = 800;
-	SetConsoleScreenBufferSize( GetStdHandle( STD_OUTPUT_HANDLE ), coninfo.dwSize );
-	FILE* file = nullptr;
-	freopen_s( &file, "CON", "w", stdout );
-	freopen_s( &file, "CON", "w", stderr );
-	SetWindowPos( GetConsoleWindow(), HWND_TOP, 0, 0, 1280, 800, 0 );
-	glfwShowWindow( window );
+	#ifdef _WIN32
+		CONSOLE_SCREEN_BUFFER_INFO coninfo;
+		AllocConsole();
+		GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &coninfo );
+		coninfo.dwSize.X = 1280;
+		coninfo.dwSize.Y = 800;
+		SetConsoleScreenBufferSize( GetStdHandle( STD_OUTPUT_HANDLE ), coninfo.dwSize );
+		FILE* file = nullptr;
+		freopen_s( &file, "CON", "w", stdout );
+		freopen_s( &file, "CON", "w", stderr );
+		SetWindowPos( GetConsoleWindow(), HWND_TOP, 0, 0, 1280, 800, 0 );
+		glfwShowWindow( window );
+	#endif
+	// For linux and mac need platform specific implementation,
+	// but from what I've seen this isn't *really* necessary
 #endif
 	// initialize application
 	InitRenderTarget(SCRWIDTH, SCRHEIGHT);
