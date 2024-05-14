@@ -67,13 +67,3 @@ target_include_directories(GAME PUBLIC template)
 
 # Precompile
 target_precompile_headers(GAME PUBLIC template/precomp.h)
-
-# Copy assets
-add_custom_target(copy_assets ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
-    COMMENT "Copying assets to build directory"
-)
-
-# Ensure that your main target triggers the asset copy
-add_dependencies(GAME copy_assets)
